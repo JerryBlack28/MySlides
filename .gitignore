@@ -1,5 +1,4 @@
 *.git
-*.sh
 *.aux
 *.log
 *.nav
