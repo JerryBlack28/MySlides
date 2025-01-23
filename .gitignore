@@ -1,7 +1,5 @@
-figures
-fig
+*.git
 *.sh
-*.png
 *.aux
 *.log
 *.nav
