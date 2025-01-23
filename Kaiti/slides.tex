@@ -1,0 +1,269 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usetheme[progressbar=frametitle, numbering=fraction]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{gensymb}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+% \usepackage[english]{babel}
+\usepackage{babel}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+% Chinese Fonts (Fontset: fandol,ubuntu)
+\usepackage[fontset=windows]{ctex}
+
+% Math Fonts
+\usefonttheme{professionalfonts} 
+\usepackage{mathspec}
+\setsansfont[BoldFont={Fira Sans},
+Numbers={OldStyle}]{Fira Sans Light}
+\setmathsfont(Digits)[Numbers={Lining, Proportional}]{Fira Sans Light}
+
+% Change Color of the theme
+\usepackage{xcolor}
+\definecolor{DarkGrey}{HTML}{353535}
+\definecolor{ECNURed}{RGB}{164,31,53}
+\definecolor{ECNUBrown}{RGB}{134,117,77}
+\definecolor{BackGround}{RGB}{250,250,250}
+\definecolor{MyBlue}{RGB}{0,161,233}
+\definecolor{MyRed}{RGB}{228,0,127}
+\setbeamercolor{normal text}{ fg= DarkGrey  }
+\setbeamercolor{alerted text}{ fg= ECNURed  }
+\setbeamercolor{example text}{ fg= ECNUBrown  }
+
+% Bolder Fonts for presenting in a large room 
+\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans}
+\metroset{block=fill}
+
+\usepackage{listings,xcolor}
+\usepackage{tikz}
+\usepackage{pgfmath}
+\usepackage{animate,media9,graphicx}
+\usepackage{calligra}
+\usepackage{array}
+\renewcommand{\arraystretch}{2}  % 增加行高
+\setlength{\tabcolsep}{10pt}       % 增加列间距
+
+\usepackage[backend=biber,style=gb7714-2015,sorting=none]{biblatex}
+\setbeamerfont{bibliography item}{size=\tiny}
+\setbeamerfont{bibliography entry author}{size=\tiny}
+\setbeamerfont{bibliography entry title}{size=\tiny}
+\setbeamerfont{bibliography entry location}{size=\tiny}
+\setbeamerfont{bibliography entry note}{size=\tiny}
+\renewcommand{\bibfont}{\tiny}
+\addbibresource{slides.bib}
+
+\lstset{
+	language         = c++,
+	numbers          = left,
+	numberstyle      = \tiny,
+	breaklines       = true,
+	captionpos       = b,
+	tabsize          = 4,
+	frame            = shadowbox,
+	columns          = fullflexible,
+	commentstyle     = \color[RGB]{0,128,0},
+	keywordstyle     = \color[RGB]{0,0,255},
+	basicstyle       = \tiny\ttfamily,
+	stringstyle      = \color[RGB]{148,0,209}\ttfamily,
+	rulesepcolor     = \color{red!20!green!20!blue!20},
+	showstringspaces = false,
+}
+
+\title{基于深度学习的等面积划分球面中周长极小值探索}
+% \subtitle{}
+\date{\today}
+\author{汇报人：丁逸飞\ \ \ \ \ \ \ \ \ \ 指导老师：王二小}
+% \institute{}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{ECNUlogo.png}}
+
+\begin{document}
+
+\maketitle
+\footnotesize
+\begin{frame}{Contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents%[hideallsubsections]
+\end{frame}
+
+\section{选题背景与意义}
+
+\begin{frame}{选题背景与意义}
+
+  \begin{block}{蜂巢问题}
+
+    构造一个平面的等面积划分，使得这个划分的总周长尽可能的小. 
+
+  \end{block}
+
+  1999 年，Hales\cite{hales2001honeycomb}证明了最优解为平面的正六边形密铺，同时将其平面上的理论应用到了球
+  面之上，证明了对于 $n = 12$ 的球面蜂巢问题，正五边形分割的总周长是最小的. 此后，人
+  们相继证明了 $n = 2, 3, 4, 6$ 的几种情况，其他情况都还等待着我们去发现. 
+
+  通过研究球面蜂巢问题，我们既可以深入探索几何排列问题，寻找更一般的排列规律和方
+  法，也可以深入探索空间优化理论和方法，对于工程、建筑和计算机图形学等领域的空间布
+  局和规划具有非常重要的理论意义. 
+
+\end{frame}
+
+\section{文献综述}
+
+\begin{frame}{有关球面蜂巢问题的研究}
+
+  蜂巢问题寻求将平面划分为单位区域的最小周长方法，经过长期推测，蜂巢定理指出，正六
+  边形提供了这种最小周长的划分，并由 Hales 于 1999 年证明\cite{hales2001honeycomb}. 对于球体的类似猜测是划
+  分为 $n$ 个全等的正 $m$ 边形可以使划分为 $n$ 个相等区域的周长最小化，事实上，只存在五种
+  这样的分区. 
+
+  后来，Hales 推广了他的平面方法来证明 $n = 12$ 的情况，即 $12$ 个正五边形的十二面体排列
+  为周长最小的情况. 1994 年，Masters\cite{masters1996perimeter}使用肥皂泡理论工具和计算机论证证明了球体上的
+  双泡定理，等效解决了 $n = 3$ 时的球面蜂巢问题. 2007 年，Conor Quinn\cite{quinn2007least}为Masters 的结
+  果提供了新的证明，并且处理了 $n = 4$ 的情况. 2010 年，Cox 和Flikkema\cite{cox2010minimal}利用数学软件
+  计算了 $n \leq 42$ 的候选情况. 目前还没有利用深度学习求解该问题的论文. 
+
+\end{frame}
+
+\begin{frame}{深度学习解决组合优化问题的研究}
+
+  近五年来，深度学习在组合优化方面的应用激增. 用于组合优化的深度学习方法通常基于端
+  到端的学习模式，即使用DNN 直接输出最优解. 当前最先进的方法主要使用序列到序列网
+  络\cite{sutskever2014sequence}和图神经网络（GNN）\cite{scarselli2008graph}进行组合优化. 
+
+  Vinyals 等人首先提出使用指针网络进行组合优化，它使用注意力机制，成功解决了小型实
+  例；Bello 等人\cite{bello2016neural}提出使用actor-critic 的DRL 算法，可以解决比PN 更大的实例；Nazari 等
+  人对PN 进行了改进，节省了训练时间，并保持了类似的性能. 
+
+  Nowak 等人\cite{nowak2017note}还应用GNN 来对问题进行建模，Joshi 等人和Li 等人对\parencite{nowak2017note}进行了改进，提高
+  了模型的性能. 受到Transformer\cite{ashish2017attention}的启发，
+  Kool\cite{kool2018attention}和Deudon 等人\cite{deudon2018learning}应用MHA 机制来解
+  决组合优化问题，这种方法在组合优化问题的并发深度学习方法中实现了最先进的性能，并
+  且可以拓展至各种实际问题. 
+
+\end{frame}
+
+\begin{frame}{深度学习解决组合优化问题的研究}
+
+  在多目标组合优化问题主要基于启发式方法进行研究的情况下，Li 等人\cite{li2020deep}采用深度学习方
+  法来解决{\color{ECNURed}多目标组合优化问题}，在执行时间和结果质量方面优于传统的多目标优化求解器. 
+
+  2015 年，Timothy 和Jonathan 等人\cite{lillicrap2015continuous}将{\color{ECNURed}深度 Q 学习}背后的思想
+  应用到{\color{ECNURed}连续的行动领域}，
+  提出了一种基于确定性策略梯度的actor-critic和无模型算法，稳健的解决了20 多个模拟
+  物理任务. 2022 年，Manna 等人\cite{manna2022learning}引入了一种基于{\color{ECNURed}决策树}的强化学习策略，结合了用于改
+  进探索的修改奖励、播放期间的高效采样，以及用于增强开发的“窗口缩放方案”，以实现
+  高效使用高维人工景观和控制强化学习问题，适用于许多其他涉及连续动作空间搜索的物
+  理科学问题. 
+
+\end{frame}
+
+\section{研究内容}
+
+\begin{frame}{研究内容}
+
+  本篇论文致力于探索基于深度学习模型的球面等面积划分问题，旨在求解{\color{ECNURed}周长的近似极小
+  值}，并进一步优化模型一构建适用于{\color{ECNURed}任意 $n$ 值}的球面等面积划分中周长极小值求解器. 这
+  项研究的核心内容将围绕以下几个方面展开：
+  
+  \begin{itemize}
+    \item 构建一个蒙特卡洛搜索树的模型，使得能够处理球面上的等面积划分问题，并在{\color{ECNURed}固定 $n$ 值}的情
+          况下找到周长的近似极小值. 
+  \end{itemize}
+
+  这一过程涉及对球面几何的深入理解和深度学习算法的创新应用，论文将探索如何将球面等面积
+  划分问题转化为在 $n\times 2$ 维空间内搜索一个点的问题，其中该点为 $n$ 个球面上点的坐标到 $n\times 2$ 维空间内的映射. 
+  同时还需要利用球面上点的对称性等特点，以保证在向下搜索的过程中保持树形结构，降低模型复杂度，提高准确率. 
+\end{frame}
+
+\begin{frame}{研究内容}
+
+  \begin{itemize}
+    \item 将深度学习与蒙特卡洛搜索树模型相结合来进行优化，以{\color{ECNURed}适应任意 $n$}的情况. 
+  \end{itemize}
+
+  通过优化，希望能够提高模型的泛化能力，使其能够快速准确地求解任意 $n$ 值的球面
+  等面积划分问题. 这一步骤将涉及大量的实验和参数调整，以确保模型在不同情况下都能保
+  持高效和准确. 
+
+\end{frame}
+
+\begin{frame}{可行性分析}
+
+  该论文的可行性分为以下几点：
+
+  \begin{itemize}
+    \item 已有的研究为连续行动领域的深度强化学习算法提供了理论基础，可以在此基础上进
+          行改进和创新. 
+
+    \item 球面上定点之间的相关性可以通过注意力机制等多尺度方法进行有效捕捉，对于提高
+          模型性能至关重要. 
+
+    \item 通过结合最先进的深度学习技术和球面理论，有信心构建出一个高效且准确的求解器. 
+  \end{itemize} 
+
+\end{frame}
+
+\begin{frame}{拟解决的关键问题和难点}
+
+  \begin{itemize}
+    \item 首先，如何同时考虑{\color{ECNURed}等面积划分和周长极小值两个目标函数}是一个挑战，因为这涉及
+          到多目标优化问题，需要设计合适的损失函数和优化策略. 
+
+    \item 其次，设计一个适用于{\color{ECNURed}固定 $n$ 值}的蒙特卡洛搜索树模型需要深入理解球面几何和
+          搜索算法的结合方式. 
+
+    \item 此外，{\color{ECNURed}顶点之间的相关性}如何影响模型的性能也是一个需要深入研究的问题. 
+
+    \item 最后，如何设计一个能够适应{\color{ECNURed}任意 $n$ 值}的深度学习模型，这涉及到模型的可扩展性和
+          灵活性. 
+  \end{itemize}
+
+\end{frame}
+
+\section{研究方法}
+
+\begin{frame}{研究方法}
+
+  \begin{itemize}
+    \item {\color{ECNURed}教师指导}：在指导老师的帮助下加深对球面等分中周长极小值问题的理解，逐步完善
+          研究课题的思路，并对所研究的内容进行可行性分析. 
+
+    \item {\color{ECNURed}对称性分析}：考虑到球面本身的对称性，从对称性的角度出发，先进行比较对称的分
+          割作为首要考虑的几种情况或者是情况所需要的条件之一. 这种方法可以帮助我们更
+          快地缩小问题的范围，并找到可能的解决方案. 
+
+    \item {\color{ECNURed}实验法}：将采用实验法来发现与确认事物间的因果联系. 将找出服从于球面密铺的需
+          要，并利用实验要求并根据研究的需要，借助各种方法技术，减少或消除各种可能影
+          响结果的无关因素的干扰，在简化的状态下找出球面的最小周长分割. 
+
+    \item {\color{ECNURed}文献研究法}：将采用文献研究法来全面地、正确地了解掌握所要研究问题. 这种方法
+          包括了解有关球面蜂巢问题的历史和现状，帮助确定研究提供方法与思路；形成关于
+          研究对象的一般印象，有助于思考与深入；以及进一步对球面蜂巢问题的理解. 通过
+          这些文献研究，站在前人的肩膀上，避免重复劳动，并在此基础上进行创新. 
+  \end{itemize}
+
+\end{frame}
+
+\section{参考文献}
+
+\begin{frame}[allowframebreaks]{参考文献}
+  
+  \printbibliography[heading=none]
+
+\end{frame}
+
+\begin{frame}{Acknowledgement}
+
+  \begin{center}
+
+    \textcolor{gray}{\Huge{\centerline{\calligra{Thank you!}}}}
+
+  \end{center}
+
+\end{frame}
+
+\end{document}
