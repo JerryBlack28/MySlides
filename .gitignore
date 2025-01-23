@@ -6,3 +6,6 @@
 *.snm
 *.toc
 *.run.xml
+*.bbl
+*.bcf
+*.blg
