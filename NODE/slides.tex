@@ -148,7 +148,8 @@
 
 \begin{frame}{Continuous Normalizing Flows}
   \begin{gather*}
-    \textbf{\textrm{z}}_1 = f(\textbf{\textrm{z}}_0) \Longrightarrow \log p(\textbf{\textrm{z}}_0) 
+    \textbf{\textrm{z}}_1 = f(\textbf{\textrm{z}}_0) \Longrightarrow \log p(\textbf{\textrm{z}}_1) =
+    \log p(\textbf{\textrm{z}}_0) 
     - \log \left|\det \frac{\partial f}{\partial \textbf{\textrm{z}}_0}\right| \\
     \Downarrow \\
     \frac{\partial\log p(\textbf{\textrm{z}}(t))}{\partial t}=-\textrm{tr}\left(\frac{\textrm{d}f}
