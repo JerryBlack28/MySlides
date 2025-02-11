@@ -50,12 +50,12 @@ Numbers={OldStyle}]{Fira Sans Light}
 \setlength{\tabcolsep}{10pt}       % 增加列间距
 
 \usepackage[backend=biber,style=gb7714-2015,sorting=none]{biblatex}
-\setbeamerfont{bibliography item}{size=\tiny}
-\setbeamerfont{bibliography entry author}{size=\tiny}
-\setbeamerfont{bibliography entry title}{size=\tiny}
-\setbeamerfont{bibliography entry location}{size=\tiny}
-\setbeamerfont{bibliography entry note}{size=\tiny}
-\renewcommand{\bibfont}{\tiny}
+\setbeamerfont{bibliography item}{size=\footnotesize}
+\setbeamerfont{bibliography entry author}{size=\footnotesize}
+\setbeamerfont{bibliography entry title}{size=\footnotesize}
+\setbeamerfont{bibliography entry location}{size=\footnotesize}
+\setbeamerfont{bibliography entry note}{size=\footnotesize}
+\renewcommand{\bibfont}{\footnotesize}
 \addbibresource{slides.bib}
 
 \lstset{
@@ -75,10 +75,10 @@ Numbers={OldStyle}]{Fira Sans Light}
 	showstringspaces = false,
 }
 
-\title{Mathematical Modle of Servo Valve}
+\title{Mathematical Model of Servo Valve}
 % \subtitle{}
+\author{汇报人：丁逸飞}
 \date{\today}
-\author{}
 % \institute{}
 % \titlegraphic{\hfill\includegraphics[height=1.5cm]{ECNUlogo.png}}
 
@@ -95,17 +95,17 @@ Numbers={OldStyle}]{Fira Sans Light}
 
   \begin{figure}
     \begin{center}
-      \includegraphics[width=0.95\textwidth]{fig/structure.jpeg}
+      \includegraphics[width=0.85\textwidth]{fig/structure.png}
     \end{center}
-    \caption{}\label{fig:1}
+    \caption{伺服阀结构图\cite{huang2022analysis}}\label{fig:1}
   \end{figure}
 
 \end{frame}
 
-\begin{frame}{压力和电流}
+\begin{frame}{工作压力和电流}
 
   \[
-    \frac{P}{I}(s)=K\left[\frac{\omega_n^2}{\omega_n^2+2\zeta\omega_ns+s^2}\right]
+    \frac{P}{I}(s)=K\left[\frac{\omega_n^2}{\omega_n^2+2\zeta\omega_ns+s^2}\right]\text{\cite{matos2022aircraft}}
   \]
 
   $K:=$ pressure control servovalve static gain (压力控制伺服阀静态增益)
@@ -114,15 +114,20 @@ Numbers={OldStyle}]{Fira Sans Light}
 
   $\zeta:=$ apparent damping ratio (表观阻尼比)
 
-  $P:=$ servovalve differential pressure output (伺服阀压差输出)
+  $P:=$ servovalve differential pressure output (伺服阀压差输出，即\textbf{\color{ECNURed}工作压力})
 
-  $I:=$ differential current input to servovalve (伺服阀的差分电流输入)
+  $I:=$ differential current input to servovalve (伺服阀的差分\textbf{\color{ECNURed}电流}输入)
 
   $s:=$ Laplace operator
 
-  \[
-    P=P_{out}-P_{in}
-  \]
+  拉普拉斯逆变换后：$\displaystyle\frac{\textrm{d}^2P(t)}{\textrm{d}t^2}+2\zeta\omega_n
+  \frac{\textrm{d}P(t)}{\textrm{d}t}+\omega_n^2P(t)=K\omega_n^2I(t)$
+
+\end{frame}
+
+\begin{frame}{References}
+  
+  \printbibliography[heading=none]
 
 \end{frame}
 
