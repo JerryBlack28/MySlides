@@ -1,0 +1,117 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usetheme[progressbar=frametitle, numbering=fraction]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{gensymb}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usepackage[english]{babel}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{amsmath}
+
+% Chinese Fonts (Fontset: fandol,ubuntu)
+\usepackage[fontset=windows]{ctex}
+
+% Math Fonts
+\usefonttheme{professionalfonts}
+\usepackage{mathspec}
+\setsansfont[BoldFont={Fira Sans},
+  Numbers={OldStyle}]{Fira Sans Light}
+\setmathsfont(Digits)[Numbers={Lining, Proportional}]{Fira Sans Light}
+
+% Change Color of the theme
+\usepackage{xcolor}
+\definecolor{DarkGrey}{HTML}{353535}
+\definecolor{ECNURed}{RGB}{164,31,53}
+\definecolor{ECNUBrown}{RGB}{134,117,77}
+\definecolor{BackGround}{RGB}{250,250,250}
+\definecolor{MyBlue}{RGB}{0,161,233}
+\definecolor{MyRed}{RGB}{228,0,127}
+\setbeamercolor{normal text}{ fg= DarkGrey  }
+\setbeamercolor{alerted text}{ fg= ECNURed  }
+\setbeamercolor{example text}{ fg= ECNUBrown  }
+
+% Bolder Fonts for presenting in a large room 
+\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans}
+\metroset{block=fill}
+
+\usepackage{listings,xcolor}
+\usepackage{tikz}
+\usepackage{pgfmath}
+\usepackage{animate,media9,graphicx}
+\usepackage{calligra}
+\usepackage{array}
+\renewcommand{\arraystretch}{2}  % 增加行高
+\setlength{\tabcolsep}{10pt}     % 增加列间距
+
+\lstset{
+  language         = c++,
+  numbers          = left,
+  numberstyle      = \tiny,
+  breaklines       = true,
+  captionpos       = b,
+  tabsize          = 4,
+  frame            = shadowbox,
+  columns          = fullflexible,
+  commentstyle     = \color[RGB]{0,128,0},
+  keywordstyle     = \color[RGB]{0,0,255},
+  basicstyle       = \tiny\ttfamily,
+  stringstyle      = \color[RGB]{148,0,209}\ttfamily,
+  rulesepcolor     = \color{red!20!green!20!blue!20},
+  showstringspaces = false,
+}
+
+\title{NeuralODE with Knowledge}
+\subtitle{}
+\author{Yifei Ding}
+\date{\today}
+% \institute{演讲者描述}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{ECNUlogo.png}}
+
+\begin{document}
+
+\maketitle
+\footnotesize
+% \begin{frame}{Contents}
+%   \setbeamertemplate{section in toc}[sections numbered]
+%   \tableofcontents%[hideallsubsections]
+% \end{frame}
+
+\begin{frame}{NeuralODE with Knowledge}
+
+  \[
+    \frac{\mathrm{d}^2P(t)}{\mathrm{d}t^2}+2\zeta\omega_n
+    \frac{\mathrm{d}P(t)}{\mathrm{d}t}+\omega_n^2P(t)=K\omega_n^2I(t),
+  \]
+
+  let $\displaystyle v(t)=\frac{\mathrm{d}P(t)}{\mathrm{d}t}$, then
+
+  \[
+    \begin{cases}
+      \displaystyle\frac{\mathrm{d}P(t)}{\mathrm{d}t}=v(t),\\
+      \displaystyle\frac{\mathrm{d}v(t)}{\mathrm{d}t}+2\zeta\omega_n v(t)+\omega_n^2 P(t)=K\omega_n^2 I(t),
+    \end{cases}
+  \]
+
+  therefore 
+  \[
+    \frac{\mathrm{d}}{\mathrm{d}t}\left[\begin{matrix}P(t)\\ v(t)\end{matrix}\right]
+      = \left[\begin{matrix}0 & 1 \\ -\omega_n^2 & -2\zeta\omega_n \end{matrix}\right] \left[\begin{matrix}P(t)\\ v(t)\end{matrix}\right]
+      + \left[\begin{matrix}0 \\ K\omega_n^2\end{matrix}\right] I(t).
+  \]
+
+\end{frame}
+
+\begin{frame}{Acknowledgement}
+  \begin{center}
+    \textcolor{gray}{\Huge{\centerline{\calligra{Thank you!}}}}
+  \end{center}
+\end{frame}
+
+\end{document}
